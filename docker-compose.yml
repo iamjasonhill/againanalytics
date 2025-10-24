@@ -6,8 +6,8 @@ services:
     depends_on:
       - postgres
     environment:
-      - DATABASE_URL=postgresql://umami:umami@postgres:5432/umami
-      - HASH_SALT=local-development-secret
+      - DATABASE_URL=${DATABASE_URL:-postgresql://umami:umami@postgres:5432/umami}
+      - HASH_SALT=${HASH_SALT:-local-development-secret}
     ports:
       - "3000:3000"
     restart: unless-stopped
@@ -15,9 +15,9 @@ services:
   postgres:
     image: postgres:15-alpine
     environment:
-      - POSTGRES_DB=umami
-      - POSTGRES_USER=umami
-      - POSTGRES_PASSWORD=umami
+      - POSTGRES_DB=${POSTGRES_DB:-umami}
+      - POSTGRES_USER=${POSTGRES_USER:-umami}
+      - POSTGRES_PASSWORD=${POSTGRES_PASSWORD:-change-this-password}
     ports:
       - "5433:5432"
     volumes:
