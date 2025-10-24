@@ -1,38 +1,41 @@
 # Supabase Notes
 
 ## Project Creation
-- Create a new Supabase project (region close to primary user base).
-- Choose the Pro plan if higher retention or PITR is required.
-- Note the generated project reference ID and connect it to the Supabase CLI (`supabase projects list`).
+- **Organization**: `jason@jasonhill.com.au` (`ehidntcmoonawynpgwym`)
+- **Project**: `again-analytics` (`kifxhefliydilggdtmad`)
+- Region: TBD (expected `Southeast Asia (Singapore)`)
+- Creation date: _(add once created)_
 
-## Database Credentials
-- Collect the following from the Supabase dashboard:
-  - `DB_HOST`
-  - `DB_PORT`
-  - `DB_USER`
-  - `DB_PASSWORD`
-  - `DB_NAME`
-  - `DB_SSL` settings
-- Construct `DATABASE_URL` compatible with Umami (`postgres://user:pass@host:port/dbname`).
+## Database Credentials (to capture)
+- `DB_HOST`: 
+- `DB_PORT`: 
+- `DB_USER`: 
+- `DB_PASSWORD`: 
+- `DB_NAME`: 
+- `DB_SSL`: 
+- `DATABASE_URL`: 
 
 ## Supabase CLI Usage
 - Login: `supabase login`
-- Link project: `supabase link --project-ref <project-ref>`
-- Manage migrations if we maintain custom schema adjustments: `supabase db push` / `supabase migration new <name>`
+- List orgs: `supabase orgs list`
+- Create project: `supabase projects create --org <org-id> --name again-analytics --password <db-password> --plan <tier>`
+- Link project (once created): `supabase link --project-ref <project-ref>`
+- Manage migrations if needed: `supabase db push`, `supabase migration new <name>`
 
 ## Access Control
-- Restrict service role key usage; only expose anon key if public API access is required.
-- Rotate keys periodically and update Vercel environment variables.
+- Restrict service role key usage; never expose publicly.
+- Store `DATABASE_URL` and `HASH_SALT` in Vercel env vars.
+- Rotate DB password/service key on schedule; update `.env.local` and Vercel secrets accordingly.
 
 ## Backups & PITR
-- Enable daily backups via Supabase dashboard.
-- If PITR (Point-in-Time Recovery) is available, configure retention to meet compliance needs.
-- Document restore procedures in the runbook.
+- Enable daily backups via Supabase settings.
+- Consider PITR for production (requires paid plan).
+- Document restore steps here after first backup.
 
 ## Monitoring
-- Enable database logs and performance insights.
-- Set up alerts for connection spikes, CPU usage, or storage growth.
+- Enable database logs and performance insights in Supabase.
+- Set alerts for connection usage, CPU, and storage growth.
 
 ## Security
-- Enforce SSL connections.
-- Limit Supabase project access to necessary team members via roles.
+- Force SSL connections for all clients.
+- Limit Supabase console access to necessary team members.
