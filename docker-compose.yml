@@ -1,0 +1,28 @@
+version: '3.9'
+
+services:
+  umami:
+    image: ghcr.io/umami-software/umami:postgres-latest
+    depends_on:
+      - postgres
+    environment:
+      - DATABASE_URL=postgresql://umami:umami@postgres:5432/umami
+      - HASH_SALT=local-development-secret
+    ports:
+      - "3000:3000"
+    restart: unless-stopped
+
+  postgres:
+    image: postgres:15-alpine
+    environment:
+      - POSTGRES_DB=umami
+      - POSTGRES_USER=umami
+      - POSTGRES_PASSWORD=umami
+    ports:
+      - "5433:5432"
+    volumes:
+      - postgres-data:/var/lib/postgresql/data
+    restart: unless-stopped
+
+volumes:
+  postgres-data:

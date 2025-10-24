@@ -1,0 +1,14 @@
+{
+  "framework": "nextjs",
+  "buildCommand": "npm run build",
+  "outputDirectory": ".next",
+  "env": {
+    "DATABASE_URL": "@database_url",
+    "HASH_SALT": "@hash_salt"
+  },
+  "installCommand": "npm install",
+  "github": {
+    "autoJobCancelation": true,
+    "silent": false
+  }
+}
