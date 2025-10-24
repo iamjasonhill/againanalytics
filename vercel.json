@@ -1,12 +1,12 @@
 {
   "framework": "nextjs",
-  "buildCommand": "npm run build",
+  "buildCommand": "pnpm run build",
   "outputDirectory": ".next",
   "env": {
     "DATABASE_URL": "@database_url",
     "HASH_SALT": "@hash_salt"
   },
-  "installCommand": "npm install",
+  "installCommand": "pnpm install",
   "github": {
     "autoJobCancelation": true,
     "silent": false
