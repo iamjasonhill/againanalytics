@@ -38,3 +38,17 @@ Again Analytics/
 5. Deploy to a staging environment, verify tracking script integration, then cut over to production.
 
 Refer to `docs/deployment-plan.md` for the detailed implementation checklist.
+
+## Testing the Tracking Pipeline
+
+Use `scripts/send-dummy-hits.js` to replay a fixed set of sample events against the ingestion endpoint. This is helpful for verifying attribution logic after deployments.
+
+```bash
+# optional overrides
+export UMAMI_ENDPOINT="https://againanalytics.vercel.app/api/send"
+export UMAMI_TEST_WEBSITE_ID="22222222-2222-2222-2222-222222222222"
+
+node scripts/send-dummy-hits.js
+```
+
+The script sends six pageviews covering direct, paid search, email, referral, social, and offline-tagged traffic. Review the resulting sessions/events in the dashboard or database to confirm channel classification.
