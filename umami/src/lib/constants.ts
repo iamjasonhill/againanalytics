@@ -54,6 +54,11 @@ export const SESSION_COLUMNS = [
   'country',
   'city',
   'region',
+  'utm_source',
+  'utm_medium',
+  'utm_campaign',
+  'utm_content',
+  'utm_term',
 ];
 
 export const FILTER_GROUPS = {
@@ -78,6 +83,11 @@ export const FILTER_COLUMNS = {
   language: 'language',
   event: 'event_name',
   tag: 'tag',
+  utm_source: 'raw_source',
+  utm_medium: 'raw_medium',
+  utm_campaign: 'raw_campaign',
+  utm_content: 'raw_content',
+  utm_term: 'raw_term',
 };
 
 export const COLLECTION_TYPE = {

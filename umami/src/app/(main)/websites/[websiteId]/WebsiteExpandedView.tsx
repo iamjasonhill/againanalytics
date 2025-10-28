@@ -2,6 +2,7 @@ import { Dropdown, Icon, Icons, Item, Text } from 'react-basics';
 import LinkButton from '@/components/common/LinkButton';
 import { useLocale, useMessages, useNavigation } from '@/components/hooks';
 import SideNav from '@/components/layout/SideNav';
+import { Grid, GridRow } from '@/components/layout/Grid';
 import BrowsersTable from '@/components/metrics/BrowsersTable';
 import CitiesTable from '@/components/metrics/CitiesTable';
 import CountriesTable from '@/components/metrics/CountriesTable';
@@ -17,6 +18,7 @@ import RegionsTable from '@/components/metrics/RegionsTable';
 import ScreenTable from '@/components/metrics/ScreenTable';
 import TagsTable from '@/components/metrics/TagsTable';
 import ChannelsTable from '@/components/metrics/ChannelsTable';
+import { UTMCards } from '@/components/metrics/UTMCards';
 import styles from './WebsiteExpandedView.module.css';
 
 const views = {
@@ -169,15 +171,23 @@ export default function WebsiteExpandedView({
         </Dropdown>
       </div>
       <div className={styles.content}>
-        <DetailsComponent
-          websiteId={websiteId}
-          domainName={domainName}
-          animate={false}
-          virtualize={true}
-          itemCount={25}
-          allowFilter={true}
-          allowSearch={true}
-        />
+        <Grid>
+          <DetailsComponent
+            websiteId={websiteId}
+            domainName={domainName}
+            animate={false}
+            virtualize={true}
+            itemCount={25}
+            allowFilter={true}
+            allowSearch={true}
+          />
+          {view === 'channel' && (
+            <GridRow columns="three">
+              <ChannelsTable websiteId={websiteId} limit={20} />
+            </GridRow>
+          )}
+          {view === 'channel' && <UTMCards websiteId={websiteId} />}
+        </Grid>
       </div>
     </div>
   );
