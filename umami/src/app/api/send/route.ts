@@ -11,7 +11,8 @@ import { secret, uuid, hash } from '@/lib/crypto';
 import { COLLECTION_TYPE } from '@/lib/constants';
 import { anyObjectParam, urlOrPathParam } from '@/lib/schema';
 import { safeDecodeURI, safeDecodeURIComponent } from '@/lib/url';
-import { createSession, saveEvent, saveSessionData } from '@/queries';
+import { createSession, saveEvent, saveSessionData, updateSessionAttribution } from '@/queries';
+import { classifyChannel } from '@/lib/attribution';
 
 const schema = z.object({
   type: z.enum(['event', 'identify']),
@@ -176,7 +177,7 @@ export async function POST(request: Request) {
         }
       }
 
-      await saveEvent({
+      const eventPayload = {
         websiteId,
         sessionId,
         visitId,
@@ -221,7 +222,36 @@ export async function POST(request: Request) {
         ttclid,
         lifatid,
         twclid,
-      });
+      };
+
+      await saveEvent(eventPayload);
+
+      if (!clickhouse.enabled) {
+        const classification = classifyChannel({
+          hostname,
+          referrerDomain,
+          urlQuery,
+          utmSource,
+          utmMedium,
+          utmCampaign,
+          utmContent,
+          utmTerm,
+        });
+
+        await updateSessionAttribution({
+          sessionId,
+          websiteId,
+          channel: classification.channel,
+          strength: classification.strength,
+          reason: classification.reason,
+          rawSource: classification.rawSource,
+          rawMedium: classification.rawMedium,
+          rawCampaign: classification.rawCampaign,
+          rawContent: classification.rawContent,
+          rawTerm: classification.rawTerm,
+          rawReferrerDomain: classification.rawReferrerDomain,
+        });
+      }
     }
 
     if (type === COLLECTION_TYPE.identify) {

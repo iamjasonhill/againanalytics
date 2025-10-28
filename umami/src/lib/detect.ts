@@ -108,8 +108,8 @@ function decodeHeader(s: string | undefined | null): string | undefined | null {
   return Buffer.from(s, 'latin1').toString('utf-8');
 }
 
-function removePortFromIP(ip: string = "") {
-  const split = ip.split(":");
+function removePortFromIP(ip: string = '') {
+  const split = ip.split(':');
 
   // Assuming ip is a valid IPv4/IPv6 address, 3 colons is the minumum for IPv6
   const ipv4 = split.length - 1 < 3;

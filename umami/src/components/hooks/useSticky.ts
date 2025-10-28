@@ -6,7 +6,7 @@ export function useSticky({ enabled = true, threshold = 1 }) {
 
   useEffect(() => {
     let observer: IntersectionObserver | undefined;
-    const handler: IntersectionObserverCallback = ([entry]) =>
+    const handler = ([entry]: IntersectionObserverEntry[]) =>
       setIsSticky(entry.intersectionRatio < threshold);
 
     if (enabled && ref.current) {
