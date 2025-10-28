@@ -1,7 +1,6 @@
 import { z } from 'zod';
 import { isbot } from 'isbot';
 import { startOfHour, startOfMonth } from 'date-fns';
-import clickhouse from '@/lib/clickhouse';
 import { parseRequest } from '@/lib/request';
 import { badRequest, json, forbidden, serverError } from '@/lib/response';
 import { fetchWebsite } from '@/lib/load';
@@ -105,7 +104,7 @@ export async function POST(request: Request) {
     const sessionId = id ? uuid(websiteId, id) : uuid(websiteId, ip, userAgent, sessionSalt);
 
     // Create a session if not found
-    if (!clickhouse.enabled && !cache?.sessionId) {
+    if (!cache?.sessionId) {
       await createSession(
         {
           id: sessionId,
@@ -223,35 +222,32 @@ export async function POST(request: Request) {
         lifatid,
         twclid,
       };
-
       await saveEvent(eventPayload);
 
-      if (!clickhouse.enabled) {
-        const classification = classifyChannel({
-          hostname,
-          referrerDomain,
-          urlQuery,
-          utmSource,
-          utmMedium,
-          utmCampaign,
-          utmContent,
-          utmTerm,
-        });
+      const classification = classifyChannel({
+        hostname,
+        referrerDomain,
+        urlQuery,
+        utmSource,
+        utmMedium,
+        utmCampaign,
+        utmContent,
+        utmTerm,
+      });
 
-        await updateSessionAttribution({
-          sessionId,
-          websiteId,
-          channel: classification.channel,
-          strength: classification.strength,
-          reason: classification.reason,
-          rawSource: classification.rawSource,
-          rawMedium: classification.rawMedium,
-          rawCampaign: classification.rawCampaign,
-          rawContent: classification.rawContent,
-          rawTerm: classification.rawTerm,
-          rawReferrerDomain: classification.rawReferrerDomain,
-        });
-      }
+      await updateSessionAttribution({
+        sessionId,
+        websiteId,
+        channel: classification.channel,
+        strength: classification.strength,
+        reason: classification.reason,
+        rawSource: classification.rawSource,
+        rawMedium: classification.rawMedium,
+        rawCampaign: classification.rawCampaign,
+        rawContent: classification.rawContent,
+        rawTerm: classification.rawTerm,
+        rawReferrerDomain: classification.rawReferrerDomain,
+      });
     }
 
     if (type === COLLECTION_TYPE.identify) {
