@@ -57,8 +57,7 @@ export async function updateSessionAttribution({
           raw_referrer_domain = {{rawReferrerDomain::text}},
           channel_last = {{channel::text}},
           channel_strength_last = {{strength::smallint}},
-          channel_reason = {{reason::json}},
-          updated_at = now()
+          channel_reason = {{reason::json}}
       where session_id = {{sessionId::uuid}}
         and website_id = {{websiteId::uuid}};
     `,
