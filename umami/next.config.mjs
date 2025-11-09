@@ -1,8 +1,13 @@
 import 'dotenv/config';
 import { createRequire } from 'module';
+import { fileURLToPath } from 'url';
+import { dirname, resolve } from 'path';
 
 const require = createRequire(import.meta.url);
 const pkg = require('./package.json');
+
+const __filename = fileURLToPath(import.meta.url);
+const __dirname = dirname(__filename);
 
 const TRACKER_SCRIPT = '/script.js';
 
@@ -211,7 +216,7 @@ export default {
     // Resolve @umami/react-zen from dist folder (built by build-components)
     config.resolve.alias = {
       ...config.resolve.alias,
-      '@umami/react-zen': require('path').resolve(__dirname, 'dist'),
+      '@umami/react-zen': resolve(__dirname, 'dist'),
     };
     return config;
   },

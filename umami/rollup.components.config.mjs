@@ -32,6 +32,8 @@ const jsBundle = {
       file: 'dist/index.js',
       format: 'es',
       sourcemap: true,
+      banner: "'use client';",
+      intro: "'use client';",
     },
   ],
   plugins: [
