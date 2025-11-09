@@ -43,7 +43,7 @@
     "download-language-names": "node scripts/download-language-names.js",
     "change-password": "node scripts/change-password.js",
     "lint": "next lint --quiet",
-    "prepare": "node -e \"if (process.env.NODE_ENV === 'production' && !process.env.CI && require('fs').existsSync('.git')){process.exit(0)}else{process.exit(1)} \" || (husky install || true) || true",
+    "prepare": "node -e \"if (process.env.CI || !require('fs').existsSync('.git')){process.exit(0)} \" && husky install || true",
     "postbuild": "node scripts/postbuild.js",
     "test": "jest",
     "cypress-open": "cypress open cypress run",
