@@ -2,19 +2,29 @@ import { useSpring, animated } from '@react-spring/web';
 import { Button, Icon } from 'react-basics';
 import { useTheme } from '@/components/hooks';
 import Icons from '@/components/icons';
+import { useEffect } from 'react';
 import styles from './ThemeButton.module.css';
 
 export function ThemeButton() {
   const { theme, saveTheme } = useTheme();
 
-  const spring = useSpring({
+  const [spring, api] = useSpring(() => ({
     opacity: 1,
     transform: 'translateY(0px) scale(1.0)',
-    from: {
-      opacity: 0,
-      transform: `translateY(${theme === 'light' ? '20px' : '-20px'}) scale(0.5)`,
-    },
-  });
+  }));
+
+  useEffect(() => {
+    api.start({
+      from: {
+        opacity: 0,
+        transform: `translateY(${theme === 'light' ? '20px' : '-20px'}) scale(0.5)`,
+      },
+      to: {
+        opacity: 1,
+        transform: 'translateY(0px) scale(1.0)',
+      },
+    });
+  }, [theme, api]);
 
   function handleClick() {
     saveTheme(theme === 'light' ? 'dark' : 'light');
