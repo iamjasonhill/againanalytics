@@ -208,6 +208,11 @@ export default {
       issuer: /\.(js|ts)x?$/,
       use: ['@svgr/webpack'],
     });
+    // Resolve @umami/react-zen from dist folder (built by build-components)
+    config.resolve.alias = {
+      ...config.resolve.alias,
+      '@umami/react-zen': require('path').resolve(__dirname, 'dist'),
+    };
     return config;
   },
   async headers() {
