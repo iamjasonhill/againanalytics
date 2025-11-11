@@ -1,5 +1,5 @@
 import { useState } from 'react';
-import { Icon, Modal, Dropdown, Item, Text, Flexbox } from 'react-basics';
+import { Icon, Modal, Dropdown, Item, Text, Flexbox, Button } from 'react-basics';
 import { endOfYear, isSameDay } from 'date-fns';
 import DatePickerForm from '@/components/metrics/DatePickerForm';
 import { useLocale, useMessages } from '@/components/hooks';
@@ -17,6 +17,7 @@ export interface DateFilterProps {
   onChange?: (value: string) => void;
   showAllTime?: boolean;
   alignment?: 'start' | 'center' | 'end';
+  showQuickPresets?: boolean; // NEW: Show quick preset buttons
 }
 
 export function DateFilter({
@@ -28,6 +29,7 @@ export function DateFilter({
   onChange,
   showAllTime = false,
   alignment = 'end',
+  showQuickPresets = false,
 }: DateFilterProps) {
   const { formatMessage, labels } = useMessages();
   const [showPicker, setShowPicker] = useState(false);
@@ -47,6 +49,14 @@ export function DateFilter({
     {
       label: formatMessage(labels.lastDays, { x: 7 }),
       value: '7day',
+    },
+    {
+      label: formatMessage(labels.lastDays, { x: 14 }),
+      value: '14day',
+    },
+    {
+      label: formatMessage(labels.lastDays, { x: 28 }),
+      value: '28day',
     },
     {
       label: formatMessage(labels.thisMonth),
@@ -122,8 +132,28 @@ export function DateFilter({
     return options.find(e => e.value === value)?.label;
   };
 
+  const quickPresets = [
+    { label: '7d', value: '7day' },
+    { label: '14d', value: '14day' },
+    { label: '28d', value: '28day' },
+  ];
+
   return (
     <>
+      {showQuickPresets && (
+        <Flexbox gap={8} className={styles.quickPresets}>
+          {quickPresets.map(preset => (
+            <Button
+              key={preset.value}
+              variant={value === preset.value ? 'primary' : 'quiet'}
+              size="sm"
+              onClick={() => handleChange(preset.value)}
+            >
+              {preset.label}
+            </Button>
+          ))}
+        </Flexbox>
+      )}
       <Dropdown
         className={classNames(className, styles.dropdown)}
         items={options}

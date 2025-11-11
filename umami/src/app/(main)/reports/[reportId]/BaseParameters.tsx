@@ -56,6 +56,7 @@ export function BaseParameters({
               startDate={startDate}
               endDate={endDate}
               onChange={handleDateChange}
+              showQuickPresets={true}
             />
           )}
         </FormRow>

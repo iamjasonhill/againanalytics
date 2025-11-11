@@ -1,3 +1,7 @@
 .dropdown span {
   white-space: nowrap;
 }
+
+.quickPresets {
+  margin-bottom: 8px;
+}
