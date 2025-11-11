@@ -97,12 +97,12 @@ export function DateFilter({
       setShowPicker(true);
       return;
     }
-    onChange(value);
+    onChange?.(value);
   };
 
   const handlePickerChange = (value: string) => {
     setShowPicker(false);
-    onChange(value);
+    onChange?.(value);
   };
 
   const handleClose = () => setShowPicker(false);
@@ -147,7 +147,11 @@ export function DateFilter({
               key={preset.value}
               variant={value === preset.value ? 'primary' : 'quiet'}
               size="sm"
-              onClick={() => handleChange(preset.value)}
+              onClick={() => {
+                if (onChange) {
+                  handleChange(preset.value);
+                }
+              }}
             >
               {preset.label}
             </Button>
